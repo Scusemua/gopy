@@ -108,12 +108,21 @@ func loadPackage(path string, buildFirst bool) (*packages.Package, error) {
 	}
 
 	// golang.org/x/tools/go/packages supports modules or GOPATH etc
-	bpkgs, err := packages.Load(&packages.Config{Mode: packages.LoadTypes}, path)
+	log.Printf("loading package [%s]...", path)
+	bpkgs, err := packages.Load(&packages.Config{
+		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles | packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes,
+	}, path)
 	if err != nil {
 		log.Printf("error resolving import path [%s]: %v\n",
 			path,
 			err,
 		)
+		return nil, err
+	}
+
+	if len(bpkgs) == 0 {
+		err := fmt.Errorf("gopy: no packages found for %q", path)
+		log.Printf("%v", err)
 		return nil, err
 	}
 
