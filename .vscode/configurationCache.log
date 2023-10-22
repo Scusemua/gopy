@@ -1,0 +1,1 @@
+{"buildTargets":["all","build","clean","fmts","gopath-update","mod-update","release","test","tidy","vet"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

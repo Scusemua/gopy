@@ -1,4 +1,4 @@
-// Copyright 2015 The go-python Authors.  All rights reserved.
+// Copyright 2015 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -16,7 +16,7 @@ import (
 	"github.com/gonuts/commander"
 	"github.com/gonuts/flag"
 
-	"github.com/go-python/gopy/bind"
+	"github.com/zhangjyr/gopy/bind"
 )
 
 func gopyMakeCmdBuild() *commander.Command {
@@ -29,7 +29,7 @@ build generates and compiles (C)Python language bindings for Go package(s).
 
 ex:
  $ gopy build [options] <go-package-name> [other-go-package...]
- $ gopy build github.com/go-python/gopy/_examples/hi
+ $ gopy build github.com/zhangjyr/gopy/_examples/hi
 `,
 		Flag: *flag.NewFlagSet("gopy-build", flag.ExitOnError),
 	}

@@ -1,4 +1,4 @@
-# Copyright 2015 The go-python Authors.  All rights reserved.
+# Copyright 2015 The zhangjyr Authors.  All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -6,7 +6,7 @@
 from __future__ import print_function
 
 __doc__ = """gopy is a convenience module to wrap and bind a Go package"""
-__author__ = "The go-python authors"
+__author__ = "The zhangjyr authors"
 
 __all__ = [
         "load",

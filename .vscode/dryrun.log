@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/tianium/Studio/GitHub/gopy'
+echo "GO111MODULE = "
+go build -v `go list ./...`
+make: Leaving directory `/Users/tianium/Studio/GitHub/gopy'
+ 

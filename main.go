@@ -1,4 +1,4 @@
-// Copyright 2015 The go-python Authors.  All rights reserved.
+// Copyright 2015 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -15,7 +15,7 @@ import (
 	"github.com/gonuts/flag"
 	"github.com/pkg/errors"
 
-	"github.com/go-python/gopy/bind"
+	"github.com/zhangjyr/gopy/bind"
 )
 
 // BuildCfg contains command options and binding generation options

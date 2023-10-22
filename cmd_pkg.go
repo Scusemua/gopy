@@ -1,4 +1,4 @@
-// Copyright 2015 The go-python Authors.  All rights reserved.
+// Copyright 2015 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/go-python/gopy/bind"
 	"github.com/gonuts/commander"
 	"github.com/gonuts/flag"
+	"github.com/zhangjyr/gopy/bind"
 )
 
 // python packaging links:
@@ -33,7 +33,7 @@ When including multiple packages, list in order of increasing dependency, and us
 
 ex:
  $ gopy pkg [options] <go-package-name> [other-go-package...]
- $ gopy pkg github.com/go-python/gopy/_examples/hi
+ $ gopy pkg github.com/zhangjyr/gopy/_examples/hi
 `,
 		Flag: *flag.NewFlagSet("gopy-pkg", flag.ExitOnError),
 	}
@@ -52,7 +52,7 @@ ex:
 	cmd.Flag.String("author", "gopy", "author name")
 	cmd.Flag.String("email", "gopy@example.com", "author email")
 	cmd.Flag.String("desc", "", "short description of project (long comes from README.md)")
-	cmd.Flag.String("url", "https://github.com/go-python/gopy", "home page for project")
+	cmd.Flag.String("url", "https://github.com/zhangjyr/gopy", "home page for project")
 	cmd.Flag.Bool("no-warn", false, "suppress warning messages, which may be expected")
 	cmd.Flag.Bool("no-make", false, "do not generate a Makefile, e.g., when called from Makefile")
 

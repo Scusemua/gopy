@@ -1,4 +1,4 @@
-// Copyright 2015 The go-python Authors.  All rights reserved.
+// Copyright 2015 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/go-python/gopy/bind"
 	"github.com/gonuts/commander"
 	"github.com/gonuts/flag"
+	"github.com/zhangjyr/gopy/bind"
 )
 
 func gopyMakeCmdGen() *commander.Command {
@@ -23,7 +23,7 @@ gen generates (C)Python language bindings for Go package(s).
 
 ex:
  $ gopy gen [options] <go-package-name> [other-go-package...]
- $ gopy gen github.com/go-python/gopy/_examples/hi
+ $ gopy gen github.com/zhangjyr/gopy/_examples/hi
 `,
 		Flag: *flag.NewFlagSet("gopy-gen", flag.ExitOnError),
 	}

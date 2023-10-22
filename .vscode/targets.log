@@ -1,0 +1,357 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Sun Oct 22 16:02:40 2023
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# makefile (from `Makefile', line 9)
+DIRS = `go list ./...`
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/tianium/Studio/GitHub/gopy
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 53)
+GIT_COMMIT = `git rev-parse --short HEAD`
+# makefile (from `Makefile', line 4)
+GOBUILD = $(GOCMD) build
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+__CFBundleIdentifier = com.microsoft.VSCodeInsiders
+# makefile (from `Makefile', line 5)
+GOCLEAN = $(GOCMD) clean
+ 
+# makefile (from `Makefile', line 52)
+PACKAGE = main
+# environment
+VSCODE_CWD = /
+# environment
+GOPROXY = https://proxy.golang.org,direct
+# environment
+PATH = /usr/local/go/bin:.:./bin:./sbin:/Users/tianium/sh:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/homebrew/bin:/Users/tianium/Studio/go/bin
+# makefile (from `Makefile', line 7)
+GOGET = $(GOCMD) get
+# environment
+GOPATH = /Users/tianium/Studio/go
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.lOhIrr6qRR/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+PWD = /Users/tianium/Studio/GitHub/gopy
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/share/man:/Library/Developer/CommandLineTools/usr/share/man:/Library/Developer/CommandLineTools/Toolchains/XcodeDefault.xctoolchain/usr/share/man:
+# environment
+GOMODCACHE = /Users/tianium/Studio/go/pkg/mod
+# environment
+HOME = /Users/tianium
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/tianium/Library/Application Support/Code - Insiders/CachedData/8e11b537e3b091a8b52c7179fb623ecdeecaf4ea
+# environment
+LOGNAME = tianium
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = tianium
+# makefile
+.DEFAULT_GOAL := all
+# environment
+GOROOT = /usr/local/go
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# makefile (from `Makefile', line 51)
+VERS = v0.4.0
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/_v/2dvph6851w946hnvdl2t82m40000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/tianium/Library/Application Support/Code - Insiders/1.84-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCodeInsiders.9848221.9848228
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# makefile (from `Makefile', line 6)
+GOTEST = $(GOCMD) test
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# makefile (from `Makefile', line 3)
+GOCMD = go
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# makefile (from `Makefile', line 54)
+VERS_DATE = `date -u +%Y-%m-%d\ %H:%M`
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# makefile (from `Makefile', line 55)
+VERS_FILE = version.go
+# environment
+VSCODE_PID = 51097
+# variable set hash-table stats:
+# Load=74/1024=7%, Rehash=0, Collisions=2/106=2%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777232, inode 1004841): 36 files, no impossibilities.
+
+# 36 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+all: build
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2023-03-19 23:09:37
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 18):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	$(GOTEST) -v $(DIRS)
+	
+
+build:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := build
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := 
+# automatic
+# | := 
+# automatic
+# < := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/14=14%
+#  commands to execute (from `Makefile', line 14):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	$(GOBUILD) -v $(DIRS)
+	
+
+vet:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 29):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	$(GOCMD) vet $(DIRS) | grep -v unkeyed
+	
+
+mod-update:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+# makefile (from `Makefile', line 37)
+# GO111MODULE = on
+# variable set hash-table stats:
+# Load=1/32=3%, Rehash=0, Collisions=0/1=0%
+#  commands to execute (from `Makefile', line 39):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	go get -u ./...
+	go mod tidy
+	
+
+gopath-update:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+# makefile (from `Makefile', line 45)
+# GO111MODULE = off
+# variable set hash-table stats:
+# Load=1/32=3%, Rehash=0, Collisions=0/1=0%
+#  commands to execute (from `Makefile', line 47):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	go get -u ./...
+	
+
+release:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 58):
+	/bin/rm -f $(VERS_FILE)
+	@echo "// WARNING: auto-generated by Makefile release target -- run 'make release' to update" > $(VERS_FILE)
+	@echo "" >> $(VERS_FILE)
+	@echo "package $(PACKAGE)" >> $(VERS_FILE)
+	@echo "" >> $(VERS_FILE)
+	@echo "const (" >> $(VERS_FILE)
+	@echo "	Version = \"$(VERS)\"" >> $(VERS_FILE)
+	@echo "	GitCommit = \"$(GIT_COMMIT)\" // the commit JUST BEFORE the release" >> $(VERS_FILE)
+	@echo "	VersionDate = \"$(VERS_DATE)\" // UTC" >> $(VERS_FILE)
+	@echo ")" >> $(VERS_FILE)
+	@echo "" >> $(VERS_FILE)
+	goimports -w $(VERS_FILE)
+	/bin/cat $(VERS_FILE)
+	git commit -am "$(VERS) release"
+	git tag -a $(VERS) -m "$(VERS) release"
+	git push
+	git push origin --tags
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 22):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	$(GOCLEAN) ./...
+	
+
+fmts:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 26):
+	gofmt -s -w .
+	
+
+tidy:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+# makefile (from `Makefile', line 32)
+# GO111MODULE = on
+# variable set hash-table stats:
+# Load=1/32=3%, Rehash=0, Collisions=0/1=0%
+#  commands to execute (from `Makefile', line 34):
+	@echo "GO111MODULE = $(value GO111MODULE)"
+	go mod tidy
+	
+
+# files hash-table stats:
+# Load=13/1024=1%, Rehash=0, Collisions=0/34=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+ 
+# Finished Make data base on Sun Oct 22 16:02:40 2023
+
+ 

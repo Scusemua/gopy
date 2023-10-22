@@ -1,4 +1,4 @@
-// Copyright 2019 The go-python Authors.  All rights reserved.
+// Copyright 2019 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-python/gopy/bind"
+	"github.com/zhangjyr/gopy/bind"
 )
 
 // 1 = pkg name, 2 = -user, 3 = version 4 = author, 5 = email, 6 = desc, 7 = url

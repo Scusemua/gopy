@@ -1,13 +1,13 @@
 # Contributing
 
-The `go-python` project (and `gopy`) eagerly accepts contributions from the community.
+The `zhangjyr` project (and `gopy`) eagerly accepts contributions from the community.
 
 ## Introduction
 
 
-The `go-python` project provides libraries and tools in Go for the Go community to better integrate with Python projects and libraries, and we would like you to join us in improving `go-python`'s quality and scope.
+The `zhangjyr` project provides libraries and tools in Go for the Go community to better integrate with Python projects and libraries, and we would like you to join us in improving `zhangjyr`'s quality and scope.
 This document is for contributors or those interested in contributing.
-Questions about `go-python` and the use of its libraries can be directed to the [go-python](mailto:go-python@googlegroups.com) mailing list.
+Questions about `zhangjyr` and the use of its libraries can be directed to the [zhangjyr](mailto:zhangjyr@googlegroups.com) mailing list.
 
 ## Contributing
 
@@ -35,14 +35,14 @@ As a rule, we keep all tests OK and try to increase code coverage.
 ### Suggesting Enhancements
 
 If the scope of the enhancement is small, open an issue.
-If it is large, such as suggesting a new repository, sub-repository, or interface refactoring, then please start a discussion on [the go-python list](https://groups.google.com/forum/#!forum/go-python).
+If it is large, such as suggesting a new repository, sub-repository, or interface refactoring, then please start a discussion on [the zhangjyr list](https://groups.google.com/forum/#!forum/zhangjyr).
 
 ### Your First Code Contribution
 
 If you are a new contributor, *thank you!*
-Before your first merge, you will need to be added to the [CONTRIBUTORS](https://github.com/go-python/license/blob/master/CONTRIBUTORS) and [AUTHORS](https://github.com/go-python/license/blob/master/AUTHORS) files.
+Before your first merge, you will need to be added to the [CONTRIBUTORS](https://github.com/zhangjyr/license/blob/master/CONTRIBUTORS) and [AUTHORS](https://github.com/zhangjyr/license/blob/master/AUTHORS) files.
 Open a pull request adding yourself to these files.
-All `go-python` code follows the BSD license in the [license document](https://github.com/go-python/license/blob/master/LICENSE).
+All `zhangjyr` code follows the BSD license in the [license document](https://github.com/zhangjyr/license/blob/master/LICENSE).
 We prefer that code contributions do not come with additional licensing.
 For exceptions, added code must also follow a BSD license.
 
@@ -71,7 +71,7 @@ CPython-2 C API.
 Now, with cffi, we support generation of python modules for Python-2,
 Python-3 and PyPy VMs.
 
-Fixes go-python/gopy#42.
+Fixes zhangjyr/gopy#42.
 ```
 
 If the `CL` modifies multiple packages at the same time, include them in the commit message:
@@ -81,19 +81,19 @@ py,bind: implement wrapping of Go interfaces
 
 bla-bla
 
-Fixes go-python/gopy#40.
+Fixes zhangjyr/gopy#40.
 ```
 
 Please always format your code with [goimports](https://godoc.org/golang.org/x/tools/cmd/goimports).
 Best is to have it invoked as a hook when you save your `.go` files.
 
-Files in the `go-python` repository don't list author names, both to avoid clutter and to avoid having to keep the lists up to date.
-Instead, your name will appear in the change log and in the [CONTRIBUTORS](https://github.com/go-python/license/blob/master/CONTRIBUTORS) and [AUTHORS](https://github.com/go-python/license/blob/master/AUTHORS) files.
+Files in the `zhangjyr` repository don't list author names, both to avoid clutter and to avoid having to keep the lists up to date.
+Instead, your name will appear in the change log and in the [CONTRIBUTORS](https://github.com/zhangjyr/license/blob/master/CONTRIBUTORS) and [AUTHORS](https://github.com/zhangjyr/license/blob/master/AUTHORS) files.
 
 New files that you contribute should use the standard copyright header:
 
 ```
-// Copyright 20xx The go-python Authors.  All rights reserved.
+// Copyright 20xx The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 ```
@@ -119,18 +119,18 @@ We follow the convention of requiring at least 1 reviewer to say LGTM before a m
 When code is tricky or controversial, submitters and reviewers can request additional review from others and more LGTMs before merge.
 You can ask for more review by saying PTAL in a comment in a pull request.
 You can follow a PTAL with one or more @someone to get the attention of particular people.
-If you don't know who to ask, and aren't getting enough review after saying PTAL, then PTAL @go-python/developers will get more attention.
+If you don't know who to ask, and aren't getting enough review after saying PTAL, then PTAL @zhangjyr/developers will get more attention.
 Also note that you do not have to be the pull request submitter to request additional review.
 
 ### What Can I Do to Help?
 
-If you are looking for some way to help the `go-python` project, there are good places to start, depending on what you are comfortable with.
+If you are looking for some way to help the `zhangjyr` project, there are good places to start, depending on what you are comfortable with.
 
-- You can [search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+user%3Ago-python) for open issues in need of resolution.
+- You can [search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+user%3Azhangjyr) for open issues in need of resolution.
 - You can improve documentation, or improve examples.
 - You can add and improve tests.
 - You can improve performance, either by improving accuracy, speed, or both.
-- You can suggest and implement new features that you think belong in `go-python`.
+- You can suggest and implement new features that you think belong in `zhangjyr`.
 
 ### Style
 
