@@ -1,4 +1,4 @@
-module github.com/zhangjyr/gopy
+module github.com/scusemua/gopy
 
 go 1.15
 
