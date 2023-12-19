@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/zhangjyr/gopy/bind"
+	"github.com/scusemua/gopy/bind"
 )
 
 // 1 = pkg name, 2 = -user, 3 = version 4 = author, 5 = email, 6 = desc, 7 = url

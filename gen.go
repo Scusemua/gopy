@@ -19,7 +19,7 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/tools/go/packages"
 
-	"github.com/zhangjyr/gopy/bind"
+	"github.com/scusemua/gopy/bind"
 )
 
 // argStr returns the full command args as a string, without path to exe
