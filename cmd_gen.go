@@ -10,7 +10,7 @@ import (
 
 	"github.com/gonuts/commander"
 	"github.com/gonuts/flag"
-	"github.com/zhangjyr/gopy/bind"
+	"github.com/scusemua/gopy/bind"
 )
 
 func gopyMakeCmdGen() *commander.Command {
@@ -23,7 +23,7 @@ gen generates (C)Python language bindings for Go package(s).
 
 ex:
  $ gopy gen [options] <go-package-name> [other-go-package...]
- $ gopy gen github.com/zhangjyr/gopy/_examples/hi
+ $ gopy gen github.com/scusemua/gopy/_examples/hi
 `,
 		Flag: *flag.NewFlagSet("gopy-gen", flag.ExitOnError),
 	}

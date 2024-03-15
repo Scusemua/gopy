@@ -10,7 +10,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/zhangjyr/gopy/_examples/cpkg"
+	"github.com/scusemua/gopy/_examples/cpkg"
 )
 
 func main() {

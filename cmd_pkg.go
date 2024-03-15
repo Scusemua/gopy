@@ -13,7 +13,7 @@ import (
 
 	"github.com/gonuts/commander"
 	"github.com/gonuts/flag"
-	"github.com/zhangjyr/gopy/bind"
+	"github.com/scusemua/gopy/bind"
 )
 
 // python packaging links:
@@ -33,7 +33,7 @@ When including multiple packages, list in order of increasing dependency, and us
 
 ex:
  $ gopy pkg [options] <go-package-name> [other-go-package...]
- $ gopy pkg github.com/zhangjyr/gopy/_examples/hi
+ $ gopy pkg github.com/scusemua/gopy/_examples/hi
 `,
 		Flag: *flag.NewFlagSet("gopy-pkg", flag.ExitOnError),
 	}
@@ -52,7 +52,7 @@ ex:
 	cmd.Flag.String("author", "gopy", "author name")
 	cmd.Flag.String("email", "gopy@example.com", "author email")
 	cmd.Flag.String("desc", "", "short description of project (long comes from README.md)")
-	cmd.Flag.String("url", "https://github.com/zhangjyr/gopy", "home page for project")
+	cmd.Flag.String("url", "https://github.com/scusemua/gopy", "home page for project")
 	cmd.Flag.Bool("no-warn", false, "suppress warning messages, which may be expected")
 	cmd.Flag.Bool("no-make", false, "do not generate a Makefile, e.g., when called from Makefile")
 
