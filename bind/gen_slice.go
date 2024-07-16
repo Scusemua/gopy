@@ -293,7 +293,7 @@ otherwise parameter is a python list that we copy from
 `)
 			g.pywrap.Printf("if len(self) == 0:\n")
 			g.pywrap.Indent()
-			g.pywrap.Printf("return bytes()\n")
+			g.pywrap.Println("return bytes()")
 			g.pywrap.Outdent()
 			g.pywrap.Printf("return _%s_to_bytes(self.handle)\n", qNm)
 			g.pywrap.Outdent()
