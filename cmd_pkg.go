@@ -55,6 +55,8 @@ ex:
 	cmd.Flag.String("url", "https://github.com/scusemua/gopy", "home page for project")
 	cmd.Flag.Bool("no-warn", false, "suppress warning messages, which may be expected")
 	cmd.Flag.Bool("no-make", false, "do not generate a Makefile, e.g., when called from Makefile")
+	cmd.Flag.Bool("dynamic-link", false, "whether to link output shared library dynamically to Python")
+	cmd.Flag.String("build-tags", "", "build tags to be passed to `go build`")
 
 	return cmd
 }
@@ -76,6 +78,8 @@ func gopyRunCmdPkg(cmdr *commander.Command, args []string) error {
 	cfg.Symbols = cmdr.Flag.Lookup("symbols").Value.Get().(bool)
 	cfg.NoWarn = cmdr.Flag.Lookup("no-warn").Value.Get().(bool)
 	cfg.NoMake = cmdr.Flag.Lookup("no-make").Value.Get().(bool)
+	cfg.DynamicLinking = cmdr.Flag.Lookup("dynamic-link").Value.Get().(bool)
+	cfg.BuildTags = cmdr.Flag.Lookup("build-tags").Value.Get().(string)
 
 	var (
 		exclude = cmdr.Flag.Lookup("exclude").Value.Get().(string)
@@ -125,14 +129,14 @@ func gopyRunCmdPkg(cmdr *commander.Command, args []string) error {
 	}
 
 	for _, path := range args {
-		buildPkgRecurse(cfg.OutputDir, path, path, exmap)
+		buildPkgRecurse(cfg.OutputDir, path, path, exmap, cfg.BuildTags)
 	}
 	return runBuild(bind.ModePkg, cfg)
 }
 
-func buildPkgRecurse(odir, path, rootpath string, exmap map[string]struct{}) error {
+func buildPkgRecurse(odir, path, rootpath string, exmap map[string]struct{}, buildTags string) error {
 	buildFirst := path == rootpath
-	bpkg, err := loadPackage(path, buildFirst)
+	bpkg, err := loadPackage(path, buildFirst, buildTags)
 	if err != nil {
 		return fmt.Errorf("gopy-gen: go build / load of package failed with path=%q: %v", path, err)
 	}
@@ -163,11 +167,11 @@ func buildPkgRecurse(odir, path, rootpath string, exmap map[string]struct{}) err
 	drs := Dirs(dir)
 	for _, dr := range drs {
 		_, ex := exmap[dr]
-		if ex || dr[0] == '.' || dr[0] == '_' {
+		if ex || dr[0] == '.' || dr[0] == '_' || dr == "internal" {
 			continue
 		}
 		sp := filepath.Join(path, dr)
-		buildPkgRecurse(odir, sp, rootpath, exmap)
+		buildPkgRecurse(odir, sp, rootpath, exmap, buildTags)
 	}
 	return nil
 }

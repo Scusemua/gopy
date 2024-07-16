@@ -7,7 +7,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -23,31 +22,33 @@ import (
 var (
 	testBackends = map[string]string{}
 	features     = map[string][]string{
-		"_examples/hi":          []string{"py3"}, // output is different for 2 vs. 3 -- only checking 3 output
-		"_examples/funcs":       []string{"py2", "py3"},
-		"_examples/sliceptr":    []string{"py2", "py3"},
-		"_examples/simple":      []string{"py2", "py3"},
-		"_examples/empty":       []string{"py2", "py3"},
-		"_examples/named":       []string{"py2", "py3"},
-		"_examples/structs":     []string{"py2", "py3"},
-		"_examples/consts":      []string{"py2", "py3"}, // 2 doesn't report .666 decimals
-		"_examples/vars":        []string{"py2", "py3"},
-		"_examples/seqs":        []string{"py2", "py3"},
-		"_examples/cgo":         []string{"py2", "py3"},
-		"_examples/pyerrors":    []string{"py2", "py3"},
-		"_examples/iface":       []string{"py3"}, // output order diff for 2, fails but actually works
-		"_examples/pointers":    []string{"py2", "py3"},
-		"_examples/arrays":      []string{"py2", "py3"},
-		"_examples/slices":      []string{"py2", "py3"},
-		"_examples/maps":        []string{"py2", "py3"},
-		"_examples/gostrings":   []string{"py2", "py3"},
-		"_examples/rename":      []string{"py2", "py3"},
-		"_examples/lot":         []string{"py2", "py3"},
-		"_examples/unicode":     []string{"py3"}, // doesn't work for 2
-		"_examples/osfile":      []string{"py2", "py3"},
-		"_examples/gopygc":      []string{"py2", "py3"},
-		"_examples/cstrings":    []string{"py2", "py3"},
-		"_examples/pkgconflict": []string{"py2", "py3"},
+		"_examples/hi":          []string{"py3"},
+		"_examples/gobytes":     []string{"py3"},
+		"_examples/funcs":       []string{"py3"},
+		"_examples/sliceptr":    []string{"py3"},
+		"_examples/simple":      []string{"py3"},
+		"_examples/empty":       []string{"py3"},
+		"_examples/named":       []string{"py3"},
+		"_examples/structs":     []string{"py3"},
+		"_examples/consts":      []string{"py3"},
+		"_examples/vars":        []string{"py3"},
+		"_examples/seqs":        []string{"py3"},
+		"_examples/cgo":         []string{"py3"},
+		"_examples/pyerrors":    []string{"py3"},
+		"_examples/iface":       []string{"py3"},
+		"_examples/pointers":    []string{"py3"},
+		"_examples/arrays":      []string{"py3"},
+		"_examples/slices":      []string{"py3"},
+		"_examples/maps":        []string{"py3"},
+		"_examples/gostrings":   []string{"py3"},
+		"_examples/rename":      []string{"py3"},
+		"_examples/lot":         []string{"py3"},
+		"_examples/unicode":     []string{"py3"},
+		"_examples/osfile":      []string{"py3"},
+		"_examples/gopygc":      []string{"py3"},
+		"_examples/cstrings":    []string{"py3"},
+		"_examples/pkgconflict": []string{"py3"},
+		"_examples/variadic":    []string{"py3"},
 	}
 
 	testEnvironment = os.Environ()
@@ -65,7 +66,7 @@ func TestGovet(t *testing.T) {
 	cmd.Stderr = buf
 	err := cmd.Run()
 	if err != nil {
-		t.Fatalf("error running %s:\n%s\n%v", "go vet", string(buf.Bytes()), err)
+		t.Fatalf("error running %s:\n%s\n%v", "go vet", buf.String(), err)
 	}
 }
 
@@ -90,17 +91,17 @@ func TestGofmt(t *testing.T) {
 
 	err = cmd.Run()
 	if err != nil {
-		t.Fatalf("error running %s:\n%s\n%v", exe, string(buf.Bytes()), err)
+		t.Fatalf("error running %s:\n%s\n%v", exe, buf.String(), err)
 	}
 
 	if len(buf.Bytes()) != 0 {
-		t.Errorf("some files were not gofmt'ed:\n%s\n", string(buf.Bytes()))
+		t.Errorf("some files were not gofmt'ed:\n%s\n", buf.String())
 	}
 }
 
 func TestGoPyErrors(t *testing.T) {
 	pyvm := testBackends["py3"]
-	workdir, err := ioutil.TempDir("", "gopy-")
+	workdir, err := os.MkdirTemp("", "gopy-")
 	if err != nil {
 		t.Fatalf("could not create workdir: %v\n", err)
 	}
@@ -129,7 +130,6 @@ ignoring python incompatible function: .func github.com/scusemua/gopy/_examples/
 func TestHi(t *testing.T) {
 	// t.Parallel()
 	path := "_examples/hi"
-	// NOTE: output differs for python2 -- only valid checking for 3
 	testPkg(t, pkg{
 		path:   path,
 		lang:   features[path],
@@ -215,7 +215,7 @@ caught: can't work for 24 hours!
 --- p.Salary(24): caught: can't work for 24 hours!
 --- Person.__init__
 caught: argument 2 must be str, not int | err-type: <class 'TypeError'>
-caught: an integer is required (got type str) | err-type: <class 'TypeError'>
+caught: 'str' object cannot be interpreted as an integer | err-type: <class 'TypeError'>
 *ERROR* no exception raised!
 hi.Person{Name="name", Age=0}
 hi.Person{Name="name", Age=42}
@@ -262,6 +262,25 @@ slice: go.Slice_int len: 2 handle: 300037 [1, 42]
 slice repr: go.Slice_int([1, 42])
 len(slice): 2
 mem(slice): caught: memoryview: a bytes-like object is required, not 'Slice_int'
+OK
+`),
+	})
+
+}
+
+func TestBytes(t *testing.T) {
+	// t.Parallel()
+	path := "_examples/gobytes"
+	testPkg(t, pkg{
+		path:   path,
+		lang:   features[path],
+		cmd:    "build",
+		extras: nil,
+		want: []byte(`Python bytes: b'\x00\x01\x02\x03'
+Go slice:  go.Slice_byte len: 10 handle: 1 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+gobytes.HashBytes from Go bytes: gobytes.Array_4_byte len: 4 handle: 2 [12, 13, 81, 81]
+Python bytes to Go:  go.Slice_byte len: 4 handle: 3 [0, 1, 2, 3]
+Go bytes to Python:  b'\x03\x04\x05'
 OK
 `),
 	})
@@ -593,10 +612,11 @@ slices.IntSum from Python list: 10
 slices.IntSum from Go slice: 10
 unsigned slice elements: 1 2 3 4
 signed slice elements: -1 -2 -3 -4
-struct slice:  slices.Slice_Ptr_slices_S len: 3 handle: 11 [12, 13, 14]
+struct slice:  slices.Slice_Ptr_slices_S len: 3 handle: 11 [slices.S{Name=S0, handle=12}, slices.S{Name=S1, handle=13}, slices.S{Name=S2, handle=14}]
 struct slice[0]:  slices.S{Name=S0, handle=15}
 struct slice[1]:  slices.S{Name=S1, handle=16}
 struct slice[2].Name:  S2
+[][]bool working as expected
 OK
 `),
 	})
@@ -752,6 +772,7 @@ func TestCStrings(t *testing.T) {
 		lang:   features[path],
 		cmd:    "build",
 		extras: nil,
+		// todo: this test on mac leaks everything except String
 		want: []byte(`gofnString leaked:  False
 gofnStruct leaked:  False
 gofnNestedStruct leaked:  False
@@ -811,6 +832,23 @@ func TestPkgConflict(t *testing.T) {
 // 	})
 // }
 
+func TestBindVariadic(t *testing.T) {
+	// t.Parallel()
+	path := "_examples/variadic"
+	testPkg(t, pkg{
+		path:   path,
+		lang:   features[path],
+		cmd:    "build",
+		extras: nil,
+		want: []byte(`NonVariadic 1+[2+3+4]+5 = 15
+Variadic 1+2+3+4+5 = 15
+Variadic Struct s(1)+s(2)+s(3) = 6
+Variadic InterFace i(1)+i(2)+i(3) = 6
+Type OK
+`),
+	})
+}
+
 // Generate / verify SUPPORT_MATRIX.md from features map.
 func TestCheckSupportMatrix(t *testing.T) {
 	var buf bytes.Buffer
@@ -868,14 +906,14 @@ don't modify manually.
 	}
 
 	if os.Getenv("GOPY_GENERATE_SUPPORT_MATRIX") == "1" {
-		err := ioutil.WriteFile("SUPPORT_MATRIX.md", buf.Bytes(), 0644)
+		err := os.WriteFile("SUPPORT_MATRIX.md", buf.Bytes(), 0644)
 		if err != nil {
 			log.Fatalf("Unable to write SUPPORT_MATRIX.md")
 		}
 		return
 	}
 
-	src, err := ioutil.ReadFile("SUPPORT_MATRIX.md")
+	src, err := os.ReadFile("SUPPORT_MATRIX.md")
 	if err != nil {
 		log.Fatalf("Unable to read SUPPORT_MATRIX.md")
 	}
@@ -904,7 +942,6 @@ type pkg struct {
 }
 
 func testPkg(t *testing.T, table pkg) {
-	// backends := []string{"py2", "py3"}
 	backends := []string{"py3"}
 	// backends := table.lang // todo: enabling py2 testing requires separate "want" output
 	for _, be := range backends {
@@ -916,11 +953,6 @@ func testPkg(t *testing.T, table pkg) {
 			continue
 		}
 		switch be {
-		case "py2":
-			t.Run(be, func(t *testing.T) {
-				// t.Parallel()
-				testPkgBackend(t, vm, table)
-			})
 		case "py3":
 			t.Run(be, func(t *testing.T) {
 				// t.Parallel()
@@ -940,7 +972,7 @@ require github.com/scusemua/gopy v0.0.0
 replace github.com/scusemua/gopy => %s
 `
 	contents := fmt.Sprintf(template, pkgDir)
-	if err := ioutil.WriteFile(filepath.Join(tstDir, "go.mod"), []byte(contents), 0666); err != nil {
+	if err := os.WriteFile(filepath.Join(tstDir, "go.mod"), []byte(contents), 0666); err != nil {
 		t.Fatalf("failed to write go.mod file: %v", err)
 	}
 }
@@ -949,7 +981,7 @@ func testPkgBackend(t *testing.T, pyvm string, table pkg) {
 	curPkgPath := reflect.TypeOf(table).PkgPath()
 	_, pkgNm := filepath.Split(table.path)
 	cwd, _ := os.Getwd()
-	workdir, err := ioutil.TempDir("", "gopy-")
+	workdir, err := os.MkdirTemp("", "gopy-")
 	if err != nil {
 		t.Fatalf("[%s:%s]: could not create workdir: %v\n", pyvm, table.path, err)
 	}
@@ -1043,6 +1075,10 @@ func testPkgBackend(t *testing.T, pyvm string, table pkg) {
 				diff, _ := cmd.CombinedOutput()
 				diffTxt = string(diff) + "\n"
 			}
+			t.Fatalf("[%s:%s]: error running python module:\n%s",
+				pyvm, table.path,
+				diffTxt,
+			)
 		}
 
 		t.Fatalf("[%s:%s]: error running python module:\ngot:\n%s\n\nwant:\n%s\n[%s:%s] diff:\n%s",

@@ -87,10 +87,11 @@ func isConstructor(sig *types.Signature) bool {
 }
 
 type PyConfig struct {
-	Version   int
-	CFlags    string
-	LdFlags   string
-	ExtSuffix string
+	Version        int
+	CFlags         string
+	LdFlags        string
+	LdDynamicFlags string
+	ExtSuffix      string
 }
 
 // AllFlags returns CFlags + " " + LdFlags
@@ -102,10 +103,24 @@ func (pc *PyConfig) AllFlags() string {
 // python VM (python, python2, python3, pypy, etc...)
 func GetPythonConfig(vm string) (PyConfig, error) {
 	code := `import sys
-import distutils.sysconfig as ds
+try:
+	import sysconfig as ds
+	def _get_python_inc():
+		return ds.get_path('include')
+except ImportError:
+	import distutils.sysconfig as ds
+	_get_python_inc = ds.get_config_var
 import json
 import os
 version=sys.version_info.major
+
+def clear_ld_flags(s):
+	if s is None:
+		return ''
+	skip_first_word = s.split(' ', 1)[1]  # skip compiler name
+	skip_bundle = skip_first_word.replace('-bundle', '')  # cgo already passes -dynamiclib
+	return skip_bundle
+
 
 if "GOPY_INCLUDE" in os.environ and "GOPY_LIBDIR" in os.environ and "GOPY_PYLIB" in os.environ:
 	print(json.dumps({
@@ -117,18 +132,20 @@ if "GOPY_INCLUDE" in os.environ and "GOPY_LIBDIR" in os.environ and "GOPY_PYLIB"
 		"shlibs":  ds.get_config_var("SHLIBS"),
 		"syslibs": ds.get_config_var("SYSLIBS"),
 		"shlinks": ds.get_config_var("LINKFORSHARED"),
+		"shflags": clear_ld_flags(ds.get_config_var("LDSHARED")),
 		"extsuffix": ds.get_config_var("EXT_SUFFIX"),
 }))
 else:
 	print(json.dumps({
 		"version": sys.version_info.major,
 		"minor": sys.version_info.minor,
-		"incdir":  ds.get_python_inc(),
+		"incdir":  _get_python_inc(),
 		"libdir":  ds.get_config_var("LIBDIR"),
 		"libpy":   ds.get_config_var("LIBRARY"),
 		"shlibs":  ds.get_config_var("SHLIBS"),
 		"syslibs": ds.get_config_var("SYSLIBS"),
 		"shlinks": ds.get_config_var("LINKFORSHARED"),
+		"shflags": clear_ld_flags(ds.get_config_var("LDSHARED")),
 		"extsuffix": ds.get_config_var("EXT_SUFFIX"),
 }))
 `
@@ -158,6 +175,7 @@ else:
 		ShLibs    string `json:"shlibs"`
 		SysLibs   string `json:"syslibs"`
 		ExtSuffix string `json:"extsuffix"`
+		ShFlags   string `json:"shflags"`
 	}
 	err = json.NewDecoder(buf).Decode(&raw)
 	if err != nil {
@@ -168,11 +186,10 @@ else:
 	raw.LibDir = filepath.ToSlash(raw.LibDir)
 
 	// on windows these can be empty -- use include dir which is usu good
+	// replace suffix case insensitive 'include' with 'libs'
 	if raw.LibDir == "" && raw.IncDir != "" {
-		raw.LibDir = raw.IncDir
-		if strings.HasSuffix(raw.LibDir, "include") {
-			raw.LibDir = raw.LibDir[:len(raw.LibDir)-len("include")] + "libs"
-		}
+		regexInc := regexp.MustCompile(`(?i)\binclude$`)
+		raw.LibDir = regexInc.ReplaceAllString(raw.IncDir, "libs")
 		fmt.Printf("no LibDir -- copy from IncDir: %s\n", raw.LibDir)
 	}
 
@@ -191,14 +208,15 @@ else:
 	cfg.Version = raw.Version
 	cfg.ExtSuffix = raw.ExtSuffix
 	cfg.CFlags = strings.Join([]string{
-		"-I" + raw.IncDir,
+		`"-I` + raw.IncDir + `"`,
 	}, " ")
 	cfg.LdFlags = strings.Join([]string{
-		"-L" + raw.LibDir,
-		"-l" + raw.LibPy,
+		`"-L` + raw.LibDir + `"`,
+		`"-l` + raw.LibPy + `"`,
 		raw.ShLibs,
 		raw.SysLibs,
 	}, " ")
+	cfg.LdDynamicFlags = raw.ShFlags
 
 	return cfg, nil
 }

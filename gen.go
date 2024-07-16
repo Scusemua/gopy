@@ -78,21 +78,28 @@ func genPkg(mode bind.BuildMode, cfg *BuildCfg) error {
 	if err != nil {
 		return err
 	}
-	err = bind.GenPyBind(mode, libExt, extraGccArgs, pyvers, &cfg.BindCfg)
+	err = bind.GenPyBind(mode, libExt, extraGccArgs, pyvers, cfg.DynamicLinking, &cfg.BindCfg)
 	if err != nil {
 		log.Println(err)
 	}
 	return err
 }
 
-func loadPackage(path string, buildFirst bool) (*packages.Package, error) {
+func loadPackage(path string, buildFirst bool, buildTags string) (*packages.Package, error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 
 	if buildFirst {
-		cmd := exec.Command("go", "build", "-v", path)
+		args := []string{"build"}
+		if buildTags != "" {
+			buildTagStr := fmt.Sprintf("\"%s\"", strings.Join(strings.Split(buildTags, ","), " "))
+			args = append(args, "-tags", buildTagStr)
+		}
+		args = append(args, "-v", path)
+		fmt.Printf("go %s\n", strings.Join(args, " "))
+		cmd := exec.Command("go", args...)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
@@ -109,9 +116,11 @@ func loadPackage(path string, buildFirst bool) (*packages.Package, error) {
 
 	// golang.org/x/tools/go/packages supports modules or GOPATH etc
 	log.Printf("loading package [%s]...", path)
-	bpkgs, err := packages.Load(&packages.Config{
-		Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles | packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes,
-	}, path)
+	// bpkgs, err := packages.Load(&packages.Config{
+	// 	Mode: packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles | packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes,
+	// }, path)
+	mode := packages.NeedName | packages.NeedFiles | packages.NeedCompiledGoFiles | packages.NeedDeps | packages.NeedImports | packages.NeedTypes | packages.NeedTypesSizes
+	bpkgs, err := packages.Load(&packages.Config{Mode: mode}, path)
 	if err != nil {
 		log.Printf("error resolving import path [%s]: %v\n",
 			path,

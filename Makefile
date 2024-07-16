@@ -8,6 +8,9 @@ GOGET=$(GOCMD) get
 
 DIRS=`go list ./...`
 
+PYTHON=python3
+PIP=$(PYTHON) -m pip
+
 all: build
 
 build: 
@@ -40,15 +43,18 @@ mod-update:
 	go get -u ./...
 	go mod tidy
 
-# gopath-update is for GOPATH to get most things updated.
-# need to call it in a target executable directory
-gopath-update: export GO111MODULE = off
-gopath-update:
-	@echo "GO111MODULE = $(value GO111MODULE)"
-	go get -u ./...
+prereq:
+	@echo "Installing python prerequisites -- ignore err if already installed:"
+	- $(PIP) install -r requirements.txt
+	@echo
+	@echo "if this fails, you may see errors like this:"
+	@echo "    Undefined symbols for architecture x86_64:"
+	@echo "    _PyInit__gi, referenced from:..."
+	@echo
+
 	
 # NOTE: MUST update version number here prior to running 'make release' and edit this file! 
-VERS=v0.4.0
+VERS=v0.4.10
 PACKAGE=main
 GIT_COMMIT=`git rev-parse --short HEAD`
 VERS_DATE=`date -u +%Y-%m-%d\ %H:%M`

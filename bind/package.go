@@ -112,10 +112,31 @@ func (p *Package) getDoc(parent string, o types.Object) string {
 	n := o.Name()
 	switch tp := o.(type) {
 	case *types.Const:
+		// Check for untyped consts
 		for _, c := range p.doc.Consts {
 			for _, cn := range c.Names {
 				if n == cn {
 					return c.Doc
+				}
+			}
+		}
+		// Check for typed consts
+		scopeName := p.pkg.Scope().Lookup(n)
+		if scopeName == nil {
+			return ""
+		}
+		constType := scopeName.Type()
+		if constType == nil {
+			return ""
+		}
+		for _, t := range p.doc.Types {
+			if p.pkg.Path()+"."+t.Name == constType.String() {
+				for _, c := range t.Consts {
+					for _, cn := range c.Names {
+						if n == cn {
+							return c.Doc
+						}
+					}
 				}
 			}
 		}
@@ -316,8 +337,15 @@ func (p *Package) process() error {
 			funcs[name] = fv
 
 		case *types.TypeName:
-			named := obj.Type().(*types.Named)
-			switch typ := named.Underlying().(type) {
+			typ := obj.Type()
+			if named, ok := typ.(*types.Named); ok {
+				typ = named.Underlying()
+			} else {
+				// we are dealing with a type alias to a type literal.
+				// this is a cursed feature used to do structural typing.
+				// just pass it as-is.
+			}
+			switch typ := typ.(type) {
 			case *types.Struct:
 				sv, err := newStruct(p, obj)
 				if err != nil {

@@ -1,6 +1,7 @@
 // Copyright 2015 The zhangjyr Authors.  All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
+
 //go:build windows
 // +build windows
 
@@ -39,7 +40,6 @@ func init() {
 		mandatory bool
 	}{
 		{"py3", py3, "", true},
-		// {"py2", py2, "", true},
 	} {
 		args := []string{"-c", ""}
 		if be.module != "" {

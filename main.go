@@ -28,6 +28,10 @@ type BuildCfg struct {
 	NoWarn bool
 	// do not generate a Makefile, e.g., when called from Makefile
 	NoMake bool
+	// link resulting library dynamically
+	DynamicLinking bool
+	// BuildTags to be passed into `go build`.
+	BuildTags string
 }
 
 // NewBuildCfg returns a newly constructed build config

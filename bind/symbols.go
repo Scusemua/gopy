@@ -153,11 +153,6 @@ func isPyCompatField(f *types.Var) (*symbol, error) {
 func isPyCompatFunc(sig *types.Signature) (ret types.Type, haserr, hasfun bool, err error) {
 	res := sig.Results()
 
-	if sig.Variadic() {
-		err = fmt.Errorf("gopy: not yet supporting variadic functions: %s", sig.String())
-		return
-	}
-
 	switch res.Len() {
 	case 2:
 		if !isErrorType(res.At(1).Type()) {
@@ -390,7 +385,7 @@ type symtab struct {
 	syms        map[string]*symbol
 	imports     map[string]string // key is full path, value is unique name
 	importNames map[string]string // package name to path map -- for detecting name conflicts
-	uniqName    byte              // char for making package name unique
+	uniqName    int               // index for making package name unique
 	parent      *symtab
 }
 
@@ -440,13 +435,11 @@ func (sym *symtab) addImport(pkg *types.Package) string {
 	}
 	ep, exists = sym.importNames[nm]
 	if exists && ep != p {
-		if sym.uniqName == 0 {
-			sym.uniqName = 'a'
-		} else {
+		if exists && ep != p {
 			sym.uniqName++
+			unm = fmt.Sprintf("s%d_%s", sym.uniqName, nm)
+			fmt.Printf("import conflict: existing: %s  new: %s  alias: %s\n", ep, p, unm)
 		}
-		unm = string([]byte{sym.uniqName}) + nm
-		fmt.Printf("import conflict: existing: %s  new: %s  alias: %s\n", ep, p, unm)
 	}
 	sym.importNames[unm] = p
 	sym.imports[p] = unm
