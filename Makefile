@@ -8,7 +8,7 @@ GOGET=$(GOCMD) get
 
 DIRS=`go list ./...`
 
-PYTHON=python3
+PYTHON=python3.11
 PIP=$(PYTHON) -m pip
 
 all: build

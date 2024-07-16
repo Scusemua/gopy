@@ -25,7 +25,7 @@ func gopyMakeCmdPkg() *commander.Command {
 	cmd := &commander.Command{
 		Run:       gopyRunCmdPkg,
 		UsageLine: "pkg <go-package-name> [other-go-package...]",
-		Short:     "generate and compile (C)Python language bindings for Go, and make a python package",
+		Short:     "generate and compile (C)Python language bindings for Golang, and make a python package",
 		Long: `
 pkg generates and compiles (C)Python language bindings for a Go package, including subdirectories, and generates python module packaging suitable for distribution.  if setup.py file does not yet exist in the target directory, then it along with other default packaging files are created, using arguments.  Typically you create initial default versions of these files and then edit them, and after that, only regenerate the go binding files.
 

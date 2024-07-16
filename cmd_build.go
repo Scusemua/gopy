@@ -24,7 +24,7 @@ func gopyMakeCmdBuild() *commander.Command {
 	cmd := &commander.Command{
 		Run:       gopyRunCmdBuild,
 		UsageLine: "build <go-package-name> [other-go-package...]",
-		Short:     "generate and compile (C)Python language bindings for Go",
+		Short:     "generate and compile (C)Python language bindings for Golang",
 		Long: `
 build generates and compiles (C)Python language bindings for Go package(s).
 
