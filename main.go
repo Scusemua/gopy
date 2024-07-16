@@ -44,6 +44,8 @@ func NewBuildCfg() *BuildCfg {
 func run(args []string) error {
 	app := &commander.Command{
 		UsageLine: "gopy",
+		Short:     "gopy generates (and compiles) a CPython extension module from a go package.",
+		Long:      "gopy generates (and compiles) a CPython extension module from a go package.",
 		Subcommands: []*commander.Command{
 			gopyMakeCmdGen(),
 			gopyMakeCmdBuild(),
