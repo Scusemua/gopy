@@ -1084,6 +1084,7 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 	py2g := fmt.Sprintf("%s { ", nsig)
 
 	// TODO: use strings.Builder
+	py2g += "_gstate := C.PyGILState_Ensure()\n"
 	if rets.Len() == 0 {
 		py2g += "if C.PyCallable_Check(_fun_arg) == 0 { return }\n"
 	} else {
@@ -1093,7 +1094,6 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 		}
 		py2g += fmt.Sprintf("if C.PyCallable_Check(_fun_arg) == 0 { return %s }\n", zstr)
 	}
-	py2g += "_gstate := C.PyGILState_Ensure()\n"
 	if nargs > 0 {
 		bstr, err := sym.buildTuple(args, "_fcargs", "_fun_arg")
 		if err != nil {
