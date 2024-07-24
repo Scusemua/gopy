@@ -262,10 +262,10 @@ func (g *pyGen) genFuncBody(sym *symbol, fsym *Func) {
 	}
 
 	// release GIL
-	g.gofile.Printf("_saved_thread := C.PyEval_SaveThread()\n")
+	g.gofile.Printf("_saved_thread := C.PyEval_SaveThread() // Release GIL \n")
 	if !rvIsErr && nres != 2 {
 		// reacquire GIL after return
-		g.gofile.Printf("defer C.PyEval_RestoreThread(_saved_thread)\n")
+		g.gofile.Printf("defer C.PyEval_RestoreThread(_saved_thread) // Reacquire GIL \n")
 	}
 
 	if isMethod {
@@ -305,7 +305,7 @@ if __err != nil {
 		case ifchandle && arg.sym.goname == "interface{}":
 			na = fmt.Sprintf(`gopyh.VarFromHandle((gopyh.CGoHandle)(%s), "interface{}")`, anm)
 		case arg.sym.isSignature():
-			na = fmt.Sprintf("%s", arg.sym.py2go)
+			na = arg.sym.py2go
 		case arg.sym.py2go != "":
 			na = fmt.Sprintf("%s(%s)%s", arg.sym.py2go, anm, arg.sym.py2goParenEx)
 		default:
@@ -416,7 +416,7 @@ if __err != nil {
 	if rvIsErr || nres == 2 {
 		g.gofile.Printf("\n")
 		// reacquire GIL
-		g.gofile.Printf("C.PyEval_RestoreThread(_saved_thread)\n")
+		g.gofile.Printf("C.PyEval_RestoreThread(_saved_thread) // Reacquire GIL \n")
 
 		g.gofile.Printf("if __err != nil {\n")
 		g.gofile.Indent()

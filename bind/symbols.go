@@ -1084,10 +1084,10 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 	py2g := fmt.Sprintf("%s { ", nsig)
 
 	// TODO: use strings.Builder
-	py2g += "_gstate := C.PyGILState_Ensure()\n" // Acquire GIL before we call `C.PyCallable_Check`
+	py2g += "_gstate := C.PyGILState_Ensure() // Acquire GIL \n" // Acquire GIL before we call `C.PyCallable_Check`
 	if rets.Len() == 0 {
 		py2g += "if C.PyCallable_Check(_fun_arg) == 0 {\n"
-		py2g += "C.PyGILState_Release(_gstate)\n" // Release GIL
+		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
 		py2g += "return\n"
 		py2g += "}\n"
 	} else {
@@ -1096,7 +1096,7 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 			return err
 		}
 		py2g += "if C.PyCallable_Check(_fun_arg) == 0 {\n"
-		py2g += "C.PyGILState_Release(_gstate)\n" // Release GIL
+		py2g += "C.PyGILState_Release(_gstate) // Release GIL  \n" // Release GIL
 		py2g += fmt.Sprintf("return %s\n", zstr)
 		py2g += "}\n"
 	}
@@ -1113,13 +1113,16 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 		py2g += retstr + "C.PyObject_CallObject(_fun_arg, nil)\n"
 	}
 	py2g += "C.gopy_err_handle()\n"
-	py2g += "C.PyGILState_Release(_gstate)\n"
 	if rets.Len() == 1 {
 		cvt, err := sym.pyObjectToGo(ret.Type(), rsym, "_fcret")
 		if err != nil {
 			return err
 		}
-		py2g += fmt.Sprintf("return %s", cvt)
+		py2g += fmt.Sprintf("ret := %s\n", cvt)
+		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "return ret\n"
+	} else {
+		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
 	}
 	py2g += "}"
 
