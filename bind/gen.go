@@ -372,7 +372,7 @@ build:
 	# goimports is needed to ensure that the imports list is valid
 	$(GOIMPORTS) -w %[1]s.go
 	# generate %[1]s_go$(LIBEXT) from %[1]s.go -- the cgo wrappers to go functions
-	$(GOBUILD) -buildmode=c-shared -o %[1]s_go$(LIBEXT) %[1]s.go
+	$(GOBUILD) -buildmode=c-shared -gcflags=all="-N -l" -o %[1]s_go$(LIBEXT) %[1]s.go
 	# use pybindgen to build the %[1]s.c file which are the CPython wrappers to cgo wrappers..
 	# note: pip install pybindgen to get pybindgen if this fails
 	$(PYTHON) build.py
@@ -414,7 +414,7 @@ build:
 	# this will fail but is needed to generate the .c file that then allows go build to work
 	- $(PYTHON) build.py >/dev/null 2>&1
 	# generate %[1]s_go.h from %[1]s.go -- unfortunately no way to build .h only
-	$(GOBUILD) -buildmode=c-shared -o %[1]s_go$(LIBEXT)
+	$(GOBUILD) -buildmode=c-shared -gcflags=all="-N -l" -o %[1]s_go$(LIBEXT)
 	# use pybindgen to build the %[1]s.c file which are the CPython wrappers to cgo wrappers..
 	# note: pip install pybindgen to get pybindgen if this fails
 	$(PYTHON) build.py
