@@ -1083,6 +1083,8 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 
 	py2g := fmt.Sprintf("%s { ", nsig)
 
+	py2g += "runtime.LockOSThread()\n"
+
 	// py2g += "fmt.Printf(\"Preparing to Call into Python Callback... \\n\")\n"
 	py2g += fmt.Sprintf("fmt.Printf(\"Preparing to call into Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 
@@ -1125,6 +1127,15 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 		py2g += retstr + "C.PyObject_CallObject(_fun_arg, nil)\n"
 		py2g += fmt.Sprintf("fmt.Printf(\"Returned from Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 	}
+
+	// py2g += "fmt.Println(\"Checking if Python error occurred now...\")\n"
+	// py2g += "if(C.PyErr_Occurred() != nil) {\n"
+	// py2g += "fmt.Println(\"[ERROR] A Python error occurred! Printing the error now...\")\n"
+	// py2g += "C.PyErr_Print();\n"
+	// py2g += "} else { \n"
+	// py2g += "fmt.Println(\"No Python error occurred.\")\n"
+	// py2g += "} \n"
+
 	py2g += "C.gopy_err_handle()\n"
 	if rets.Len() == 1 {
 		cvt, err := sym.pyObjectToGo(ret.Type(), rsym, "_fcret")

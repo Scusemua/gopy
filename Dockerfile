@@ -19,6 +19,8 @@ RUN apt-get clean
 # RUN apt-get update && apt-get install -y pkg-config python3-dev python3-pip && apt-get clean
 # RUN echo "/usr/local/lib >> /etc/ld.so.conf && ldconfig"
 
+RUN go install -a -v -gcflags "-N -l" std
+
 RUN python3.11 -m pip install pybindgen
 
 RUN go install golang.org/x/tools/cmd/goimports@latest

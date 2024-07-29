@@ -81,6 +81,7 @@ static inline int gopy_method_check(PyObject* obj) { // macro
 	return PyMethod_Check(obj);
 }
 static inline void gopy_err_handle() {
+	
 	if(PyErr_Occurred() != NULL) {
 		PyErr_Print();
 	}
