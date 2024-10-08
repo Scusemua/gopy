@@ -3,7 +3,7 @@
 package main
 
 const (
-	Version     = "v0.4.11.6"
+	Version     = "v0.4.11.7"
 	GitCommit   = "d31743f"          // the commit JUST BEFORE the release
 	VersionDate = "2024-10-02 16:11" // UTC
 )

@@ -261,18 +261,18 @@ func (g *pyGen) genFuncBody(sym *symbol, fsym *Func) {
 		}
 	}
 
-	var _id string = ""
-	if sym != nil {
-		_id = sym.id
-	}
+	// var _id string = ""
+	// if sym != nil {
+	// 	_id = sym.id
+	// }
 
-	g.gofile.Printf("go_src_func_name := \"%s_%s\"\n", _id, fsym.name)
-	g.gofile.Println("fmt.Printf(\"Calling: '%s'\\n\", go_src_func_name)")
+	// g.gofile.Printf("go_src_func_name := \"%s_%s\"\n", _id, fsym.name)
+	// g.gofile.Println("fmt.Printf(\"Calling: '%s'\\n\", go_src_func_name)")
 
 	// release GIL
 	g.gofile.Printf("_saved_thread := C.PyEval_SaveThread() // Release GIL \n")
 
-	g.gofile.Printf("fmt.Printf(\"Released GIL at beginning of '%s'\\n\")\n", fsym.name)
+	// g.gofile.Printf("fmt.Printf(\"Released GIL at beginning of '%s'\\n\")\n", fsym.name)
 
 	if !rvIsErr && nres != 2 {
 		// reacquire GIL after return
