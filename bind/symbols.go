@@ -1089,12 +1089,20 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 	// py2g += fmt.Sprintf("fmt.Printf(\"Preparing to call into Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 
 	// TODO: use strings.Builder
-	py2g += "_gstate := C.PyGILState_Ensure() // Acquire GIL \n" // Acquire GIL before we call `C.PyCallable_Check`
+	// py2g += "_gstate := C.PyGILState_Ensure() // Acquire GIL \n" // Acquire GIL before we call `C.PyCallable_Check`
+	py2g += "C.PyEval_RestoreThread(_saved_thread) // Acquire GIL \n" // Acquire GIL before we call `C.PyCallable_Check`
+
 	// py2g += fmt.Sprintf("fmt.Printf(\"Acquired GIL in Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 	if rets.Len() == 0 {
+		py2g += "if _fun_arg == nil {\n"
+		py2g += "\tfmt.Printf(\"[CGO WARNING] 'resolve' PyObject* callback is nil.\")\n"
+		// py2g += "\tC.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
+		py2g += "\treturn\n"
+		py2g += "}\n"
 		py2g += "if C.PyCallable_Check(_fun_arg) == 0 {\n"
-		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
-		// py2g += fmt.Sprintf("fmt.Printf(\"Released GIL in Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
+		// py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
 		py2g += "return\n"
 		py2g += "}\n"
 	} else {
@@ -1102,8 +1110,15 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 		if err != nil {
 			return err
 		}
+		py2g += "if _fun_arg == nil {\n"
+		py2g += "\tfmt.Printf(\"[CGO WARNING] 'resolve' PyObject* callback is nil.\")\n"
+		// py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
+		py2g += fmt.Sprintf("\treturn %s\n", zstr)
+		py2g += "}\n"
 		py2g += "if C.PyCallable_Check(_fun_arg) == 0 {\n"
-		py2g += "C.PyGILState_Release(_gstate) // Release GIL  \n" // Release GIL
+		// py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
 		// py2g += fmt.Sprintf("fmt.Printf(\"Released GIL in Python callback of type %s (no call to Python callback) [%%s] \\n\", go_src_func_name)\n", n)
 		py2g += fmt.Sprintf("return %s\n", zstr)
 		py2g += "}\n"
@@ -1143,11 +1158,13 @@ func (sym *symtab) addSignatureType(pkg *types.Package, obj types.Object, t type
 			return err
 		}
 		py2g += fmt.Sprintf("ret := %s\n", cvt)
-		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		// py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
 		// py2g += fmt.Sprintf("fmt.Printf(\"Released GIL in Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 		py2g += "return ret\n"
 	} else {
-		py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		// py2g += "C.PyGILState_Release(_gstate) // Release GIL \n" // Release GIL
+		py2g += "_saved_thread = C.PyEval_SaveThread() // Release GIL \n" // Release GIL
 		// py2g += fmt.Sprintf("fmt.Printf(\"Released GIL in Python callback of type %s [%%s] \\n\", go_src_func_name)\n", n)
 	}
 	py2g += "}"
