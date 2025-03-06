@@ -276,6 +276,11 @@ func (g *pyGen) genFuncBody(sym *symbol, fsym *Func) {
 
 	if !rvIsErr && nres != 2 {
 		// reacquire GIL after return
+
+		g.gofile.Printf("var wg sync.WaitGroup\n")
+		g.gofile.Printf("wg.Add(1)\n")
+		g.gofile.Printf("defer wg.Done()\n")
+
 		g.gofile.Printf("defer C.PyEval_RestoreThread(_saved_thread) // Reacquire GIL \n")
 	}
 
@@ -413,10 +418,12 @@ if __err != nil {
 	if nres == 0 {
 		g.gofile.Printf("if boolPyToGo(goRun) {\n")
 		g.gofile.Indent()
+		g.gofile.Printf("fmt.Printf(\"Calling 'resolve' callback for function '%s' in separate goroutine.\\n\")\n", fsym.GoName())
 		g.gofile.Printf("go %s\n", funCall)
 		g.gofile.Outdent()
 		g.gofile.Printf("} else {\n")
 		g.gofile.Indent()
+		g.gofile.Printf("fmt.Printf(\"Calling 'resolve' callback for function '%s' in this goroutine.\\n\")\n", fsym.GoName())
 		g.gofile.Printf("%s\n", funCall)
 		g.gofile.Outdent()
 		g.gofile.Printf("}")
